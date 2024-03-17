@@ -15,7 +15,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 @Configuration
-@EnableJpaAuditing
 public class JacksonConfig {
 
 
