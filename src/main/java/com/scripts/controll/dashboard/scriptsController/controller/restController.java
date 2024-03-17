@@ -1,5 +1,8 @@
 package com.scripts.controll.dashboard.scriptsController.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,6 +42,13 @@ public class restController {
 	 return ResponseEntity.ok(userServiceI.insertUser(convertDtotoUser(user)));
  }
 
+ 
+ @PutMapping("/updateUser")
+ public ResponseEntity<String> updateUser(@RequestBody updateRequest request)
+ {
+	 String result=userServiceI.updateUser(request.getUser());
+	 return ResponseEntity.ok(result);
+ }
  
  @DeleteMapping("/delete")
  public ResponseEntity<String> deleteUser(@RequestParam Long userId)
@@ -82,6 +92,12 @@ public class restController {
 	 }
  }
  
+ @GetMapping("/findAll")
+ public List<userDto> findAll()
+ {
+	 List<User> userList=userServiceI.findAllUsers();
+	 return userList.stream().map(this::convertUserToDto).collect(Collectors.toList());
+ }
  
  private User convertDtotoUser(userDto user)
  {

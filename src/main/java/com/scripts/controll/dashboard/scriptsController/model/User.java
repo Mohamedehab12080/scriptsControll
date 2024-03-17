@@ -1,8 +1,10 @@
 package com.scripts.controll.dashboard.scriptsController.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "\"user\"")
 public class User extends baseEntity<Long>{
 
 	private String name;
