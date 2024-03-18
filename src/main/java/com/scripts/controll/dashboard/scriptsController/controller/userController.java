@@ -63,39 +63,56 @@ public class userController {
  }
  	
  @PostMapping("/addUser")
- public String insertUser(@ModelAttribute("userDto") userDto userDto)
+ public String insertUser(HttpSession session,@ModelAttribute("userDto") userDto userDto)
  {
-	 String resultofInsertion=userServiceI.insertUser(convertDtotoUser(userDto));
-	 if(resultofInsertion.contains("Added"))
-	 {
-		 return "redirect:/user/getPage?success_add";
-	 }else if(resultofInsertion.contains("exists"))
-	 {
-		 return "redirect:/user/getPage?user_exists";
-	 }else 
-	 {
-		 return "redirect:/user/getPage?not_added";
-	 }
+	 Admin user=(Admin) session.getAttribute("user");
+		if(user!=null)
+		{
+		 String resultofInsertion=userServiceI.insertUser(convertDtotoUser(userDto));
+		 if(resultofInsertion.contains("Added"))
+		 {
+			 return "redirect:/user/getPage?success_add";
+		 }else if(resultofInsertion.contains("exists"))
+		 {
+			 return "redirect:/user/getPage?user_exists";
+		 }else 
+		 {
+			 return "redirect:/user/getPage?not_added";
+		 }
+		}else 
+		{
+			return "redirect:/";
+		}
  }
 
  
  @GetMapping("/delete/{id}")
- public String deleteUser(@PathVariable("id") Long id)
+ public String deleteUser(HttpSession session,@PathVariable("id") Long id)
  {
-	 String resultOfdelete=userServiceI.deleteUserById(id);
-	if(resultOfdelete.contains("Deleted"))
-	{
-		return"redirect:/user/getPage?deleted";
-	}else 
-	{
-		return"redirect:/user/getPage?not_found";
-	}
+	 Admin user=(Admin) session.getAttribute("user");
+		if(user!=null)
+		{
+			 String resultOfdelete=userServiceI.deleteUserById(id);
+			if(resultOfdelete.contains("Deleted"))
+			{
+				return"redirect:/user/getPage?deleted";
+			}else 
+			{
+				return"redirect:/user/getPage?not_found";
+			}
+		}else
+		{
+			return "redirect:/";
+		}
  }
  
  
  @GetMapping("/disable/{id}")
- public String disableUserById(@PathVariable("id") Long id)
+ public String disableUserById(HttpSession session,@PathVariable("id") Long id)
  {
+	 Admin user=(Admin) session.getAttribute("user");
+		if(user!=null)
+		{
 	 String result=userServiceI.disableUserById(id);
 	 if(result.equals("disabled"))
 	 {
@@ -107,12 +124,19 @@ public class userController {
 	 {
 		 return "redirect:/user/getPage?not_found";
 	 }
+		}else 
+		{
+			return "redirect:/";
+		}
  }
  
 
  @GetMapping("/enable/{id}")
- public String enableUserById(@PathVariable("id") Long id)
+ public String enableUserById(HttpSession session,@PathVariable("id") Long id)
  {
+	 Admin user=(Admin) session.getAttribute("user");
+		if(user!=null)
+		{
 	 String result=userServiceI.enableUserById(id);
 	 if(result.equals("enabled"))
 	 {
@@ -124,12 +148,21 @@ public class userController {
 	 {
 		 return "redirect:/user/getPage?not_found";
 	 }
+		}
+		else 
+		{
+			return "redirect:/";	
+		}
  }
  
  
  @PostMapping("/updateUsers") 
- public String update(@ModelAttribute("userDto") userDto userDto)
+ public String update(HttpSession session,@ModelAttribute("userDto") userDto userDto)
  {
+
+	 Admin user=(Admin) session.getAttribute("user");
+		if(user!=null)
+		{
 	 	String result=userServiceI.updateUser(userDto);
 	 	if(result.equals("update"))
 	 	{
@@ -144,10 +177,14 @@ public class userController {
 			 return "redirect:/user/getPage?not_found";
 
 	 	}
+		}else 
+		{
+			return "redirect:/";	
+		}
  }
  
  @GetMapping("/findByEmail")
- public ResponseEntity<userDto> findByEmail(@RequestParam String email)
+ public ResponseEntity<userDto> findByEmail(HttpSession session,@RequestParam String email)
  {
 	 if(userServiceI.findByEmail(email)!=null)
 	 {
@@ -156,10 +193,11 @@ public class userController {
 	 {
 		 return ResponseEntity.notFound().build();
 	 }
+		
  }
  
  @GetMapping("/findByName")
- public ResponseEntity<userDto> findByName(@RequestParam String name)
+ public ResponseEntity<userDto> findByName(HttpSession session,@RequestParam String name)
  {
 	 if(userServiceI.findByName(name)!=null)
 	 {
@@ -171,7 +209,7 @@ public class userController {
  }
 // 
  @GetMapping("/findAll")
- public List<userDto> findAll()
+ public List<userDto> findAll(HttpSession session)
  {
 	 List<User> userList=userServiceI.findAllUsers();
 	 return userList.stream().map(this::convertUserToDto).collect(Collectors.toList());
