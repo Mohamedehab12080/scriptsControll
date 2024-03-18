@@ -58,7 +58,7 @@ public class userController {
 		 return "add-user";
 	}else 
 	{
-		return "redirect:/login";
+		return "redirect:/";
 	}
  }
  	
