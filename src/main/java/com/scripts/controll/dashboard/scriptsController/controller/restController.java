@@ -1,12 +1,14 @@
 package com.scripts.controll.dashboard.scriptsController.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -74,6 +76,19 @@ public class restController {
 	 if(userServiceI.findByEmail(email)!=null)
 	 {
 		 return ResponseEntity.ok(convertUserToDto(userServiceI.findByEmail(email)));
+	 }else 
+	 {
+		 return ResponseEntity.notFound().build();
+	 }
+ }
+ 
+ @PostMapping("/check")
+ public ResponseEntity<String> findByEmailAndBassword(@RequestBody checkRequest checkRequest)
+ {
+	User fetched=userServiceI.findByEmail(checkRequest.getUseremail());
+	 if(fetched.getPassword().equals(checkRequest.getUserpassword()))
+	 {
+		 return ResponseEntity.ok("success");
 	 }else 
 	 {
 		 return ResponseEntity.notFound().build();
