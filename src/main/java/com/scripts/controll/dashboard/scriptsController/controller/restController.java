@@ -1,5 +1,10 @@
 package com.scripts.controll.dashboard.scriptsController.controller;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,11 +76,33 @@ public class restController {
  }
  
  @GetMapping("/findByEmail")
- public ResponseEntity<userDto> findByEmail(@RequestParam String email)
+ public ResponseEntity<?> findByEmail(@RequestParam String email)
  {
-	 if(userServiceI.findByEmail(email)!=null)
+	 User fetched=userServiceI.findByEmail(email);
+	 if(fetched!=null)
 	 {
-		 return ResponseEntity.ok(convertUserToDto(userServiceI.findByEmail(email)));
+		  LocalDateTime createdDate = fetched.getCreatedDate();
+	        LocalDateTime now = LocalDateTime.now();
+	        
+	        Duration duration = Duration.between(createdDate, now);
+
+	        // Get the difference in days
+	        long daysDifference = duration.toDays();
+
+	        // Add the difference to the current date
+	        LocalDateTime durationDate = now.plus((30-daysDifference), ChronoUnit.DAYS);
+	        // Check if the duration is less than one day
+	        if (duration.toDays() < 1) {
+	            duration = Duration.ofDays(1); // Consider it as one day
+	        }
+	        // Format the date
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	        String formattedDate = durationDate.format(formatter);
+	        responseOfCheck response =new responseOfCheck();
+	        response.setCreatedDate(createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+	        response.setDurationDate(formattedDate);
+	        response.setStatus("success");
+		 return ResponseEntity.ok(response);
 	 }else 
 	 {
 		 return ResponseEntity.notFound().build();
@@ -83,12 +110,34 @@ public class restController {
  }
  
  @PostMapping("/check")
- public ResponseEntity<String> findByEmailAndBassword(@RequestBody checkRequest checkRequest)
+ public ResponseEntity<?> findByEmailAndBassword(@RequestBody checkRequest checkRequest)
  {
 	User fetched=userServiceI.findByEmail(checkRequest.getUseremail());
-	 if(fetched.getPassword().equals(checkRequest.getUserpassword()))
+	 if(fetched!=null&&fetched.getPassword().equals(checkRequest.getUserpassword()))
 	 {
-		 return ResponseEntity.ok("success");
+		 	
+	        LocalDateTime createdDate = fetched.getCreatedDate();
+	        LocalDateTime now = LocalDateTime.now();
+	        
+	        Duration duration = Duration.between(createdDate, now);
+
+	        // Get the difference in days
+	        long daysDifference = duration.toDays();
+
+	        // Add the difference to the current date
+	        LocalDateTime durationDate = now.plus((30-daysDifference), ChronoUnit.DAYS);
+	        // Check if the duration is less than one day
+	        if (duration.toDays() < 1) {
+	            duration = Duration.ofDays(1); // Consider it as one day
+	        }
+	        // Format the date
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	        String formattedDate = durationDate.format(formatter);
+	        responseOfCheck response =new responseOfCheck();
+	        response.setCreatedDate(createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+	        response.setDurationDate(formattedDate);
+	        response.setStatus("success");
+		 return ResponseEntity.ok(response);
 	 }else 
 	 {
 		 return ResponseEntity.notFound().build();
