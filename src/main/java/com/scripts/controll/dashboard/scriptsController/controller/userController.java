@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.scripts.controll.dashboard.scriptsController.DTO.userDto;
 import com.scripts.controll.dashboard.scriptsController.DTO.userDtoMapper;
+import com.scripts.controll.dashboard.scriptsController.model.Admin;
 import com.scripts.controll.dashboard.scriptsController.model.User;
 import com.scripts.controll.dashboard.scriptsController.service.runningScriptServiceInterface;
 //Your imports here
 import com.scripts.controll.dashboard.scriptsController.service.userServiceInterface;
+
+import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -40,17 +43,25 @@ public class userController {
  }
  
  @GetMapping("/getPage")
- public String getPage(Model model)
+ public String getPage(HttpSession session, Model model)
  {
-	 model.addAttribute("userDto",new userDto());
-	 List<User> userList=userServiceI.findAllUsers();
-	 List<userDto> userDtoList=userList.stream().map(this::convertUserToDto).collect(Collectors.toList());
-	 model.addAttribute("userList",userDtoList);
-	 String copyRights=(char) 169+" 2024 F.R Agency. All rights reserved.";
-	 model.addAttribute("copy",copyRights);
-	 return "add-user";
+	Admin user=(Admin) session.getAttribute("user");
+	if(user!=null)
+	{
+		 model.addAttribute("userDto",new userDto());
+		 List<User> userList=userServiceI.findAllUsers();
+		 List<userDto> userDtoList=userList.stream().map(this::convertUserToDto).collect(Collectors.toList());
+		 model.addAttribute("userList",userDtoList);
+		 String copyRights=(char) 169+" 2024 F.R Agency. All rights reserved.";
+		 model.addAttribute("copy",copyRights);
+		 model.addAttribute("userName",user.getName());
+		 return "add-user";
+	}else 
+	{
+		return "redirect:/login";
+	}
  }
- 
+ 	
  @PostMapping("/addUser")
  public String insertUser(@ModelAttribute("userDto") userDto userDto)
  {

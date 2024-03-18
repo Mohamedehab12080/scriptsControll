@@ -1,6 +1,8 @@
 package com.scripts.controll.dashboard.scriptsController.config;
 
 import java.util.ArrayList;
+
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,19 +22,33 @@ import jakarta.transaction.Transactional;
 public class startup implements CommandLineRunner{
 
 	
-//	@Autowired
-//	private userServiceInterface userServiceI;
-//	@Autowired 
-//	private adminRepository adminRepo;
-//	
-//	@Autowired 
-//	private roleRepository roleRepo;
-//	
+	@Autowired
+	private userServiceInterface userServiceI;
+	@Autowired 
+	private adminRepository adminRepo;
+	
+	@Autowired 
+	private roleRepository roleRepo;
+	
 	@Override
 	@Transactional
 	public void run(String... args) throws Exception {
-
-	}
+		
+//		Role role=new Role();
+//		role.setName("ADMIN");
+//		Role inserted=roleRepo.save(role);
+//		
+//		List<Role> listrole=new ArrayList<Role>();
+//		listrole.add(inserted);
+//		
+//		Admin admin=new Admin();
+//		admin.setEmail("admin");
+//		admin.setPassword("25251436");
+//		admin.setEnabled(true);
+//		admin.setName("User");
+//		admin.setRoles(listrole);
+//		adminRepo.save(admin);
+			}
 	
 
 }

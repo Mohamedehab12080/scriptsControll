@@ -328,11 +328,21 @@
 .toggle-passwordUp i:hover {
     color: #007bff; /* Change the color on hover */
 }
-
+  		.logout-link {
+            color: #333; /* Change the color as needed */
+            text-decoration: none;
+        }
+        .logout-link:hover {
+            color: #666; /* Change the color on hover as needed */
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
+	
+    	  <a href="#" th:href="@{/logout}" class="logout-link">
+     	    <i class="fas fa-sign-out-alt"></i> Logout
+    	 </a>
     <div class="container">
         <h1>User Management Dashboard</h1>
         
