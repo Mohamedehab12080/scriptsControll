@@ -64,8 +64,8 @@
             background-color: #0056b3;
         }
         
-           #addUserForm {
-        max-width: 900px;
+       #addUserForm {
+        max-width: 950px;
         margin: 0 auto;
         background-color: #f9f9f9;
         padding: 20px;
@@ -186,7 +186,7 @@
         background-color: #0056b3;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 950px) {
         #addUserForm {
             flex-direction: column;
             align-items: stretch;
@@ -351,7 +351,7 @@
             <input type="text" name="name" id="userName" placeholder="Name" th:field="*{name}" required>
             <input type="text" name="email" id="email" placeholder="Email" th:field="*{email}" required>
 			<input type="password" name="password" id="password" placeholder="Password" th:field="*{password}" required>
-	      	<input type="text" name="mobileNumber" id="mobileNumber" placeholder="Mobile Number" th:field="*{mobileNumber}" >
+	      	<input type="text" name="mobileNumber" id="mobileNumber" placeholder="MAC Address" th:field="*{mobileNumber}" >
             <select th:field="*{Enabled}" name="isEnabled" id="isEnabled" required>
                 <option value="0">Disabled</option>
                 <option value="1">Enabled</option>
@@ -379,7 +379,7 @@
     <span class="toggle-passwordUp" onclick="togglePasswordVisibility()">
         <i class="fa fa-eye" aria-hidden="true"></i>
     </span>
-</div>            <input type="text" name="mobileNumber" id="mobileNumberUp" placeholder="Mobile Number" th:field="*{mobileNumber}" >
+</div>            <input type="text" name="mobileNumber" id="mobileNumberUp" placeholder="MAC Address" th:field="*{mobileNumber}" >
             <select th:field="*{Enabled}" name="isEnabled" id="isEnabledUp" required>
                 <option value="0">Disabled</option>
                 <option value="1">Enabled</option>

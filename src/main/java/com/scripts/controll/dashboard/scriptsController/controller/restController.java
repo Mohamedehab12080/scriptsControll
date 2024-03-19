@@ -23,10 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.scripts.controll.dashboard.scriptsController.DTO.userDto;
 import com.scripts.controll.dashboard.scriptsController.DTO.userDtoMapper;
+import com.scripts.controll.dashboard.scriptsController.model.Admin;
 import com.scripts.controll.dashboard.scriptsController.model.User;
 import com.scripts.controll.dashboard.scriptsController.service.runningScriptServiceInterface;
 //Your imports here
 import com.scripts.controll.dashboard.scriptsController.service.userServiceInterface;
+
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/controller")
@@ -90,7 +93,7 @@ public class restController {
 	        long daysDifference = duration.toDays();
 
 	        // Add the difference to the current date
-	        LocalDateTime durationDate = now.plus((30-daysDifference), ChronoUnit.DAYS);
+	        LocalDateTime durationDate = now.plus((30-daysDifference)+1, ChronoUnit.DAYS);
 	        // Check if the duration is less than one day
 	        if (duration.toDays() < 1) {
 	            duration = Duration.ofDays(1); // Consider it as one day
@@ -112,8 +115,9 @@ public class restController {
  @PostMapping("/check")
  public ResponseEntity<?> findByEmailAndBassword(@RequestBody checkRequest checkRequest)
  {
-	User fetched=userServiceI.findByEmail(checkRequest.getUseremail());
-	 if(fetched!=null&&fetched.getPassword().equals(checkRequest.getUserpassword()))
+	User fetched=userServiceI.findByEmail(checkRequest.getUseremail().strip());
+	 if(fetched!=null&&fetched.getPassword().equals(checkRequest.getUserpassword()) 
+			 &&checkRequest.getMacAddress().equalsIgnoreCase(fetched.getMobileNumber()))
 	 {
 		 	
 	        LocalDateTime createdDate = fetched.getCreatedDate();
@@ -125,7 +129,7 @@ public class restController {
 	        long daysDifference = duration.toDays();
 
 	        // Add the difference to the current date
-	        LocalDateTime durationDate = now.plus((30-daysDifference), ChronoUnit.DAYS);
+	        LocalDateTime durationDate = now.plus((30-daysDifference)+1, ChronoUnit.DAYS);
 	        // Check if the duration is less than one day
 	        if (duration.toDays() < 1) {
 	            duration = Duration.ofDays(1); // Consider it as one day
@@ -137,6 +141,7 @@ public class restController {
 	        response.setCreatedDate(createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 	        response.setDurationDate(formattedDate);
 	        response.setStatus("success");
+	        response.setAddress(fetched.getMobileNumber());
 		 return ResponseEntity.ok(response);
 	 }else 
 	 {
@@ -145,22 +150,36 @@ public class restController {
  }
  
  @GetMapping("/findByName")
- public ResponseEntity<userDto> findByName(@RequestParam String name)
+ public ResponseEntity<userDto> findByName(HttpSession session, @RequestParam String name)
  {
-	 if(userServiceI.findByName(name)!=null)
-	 {
-		 return ResponseEntity.ok(convertUserToDto(userServiceI.findByName(name)));
-	 }else 
-	 {
-		 return ResponseEntity.notFound().build();
-	 }
+	Admin user=(Admin)session.getAttribute("user");
+	if(user!=null)
+	{
+		if(userServiceI.findByName(name)!=null)
+		 {
+			 return ResponseEntity.ok(convertUserToDto(userServiceI.findByName(name)));
+		 }else 
+		 {
+			 return ResponseEntity.notFound().build();
+		 }
+	}else 
+	{
+		return ResponseEntity.notFound().build();
+	}
  }
  
  @GetMapping("/findAll")
- public List<userDto> findAll()
+ public List<userDto> findAll(HttpSession session)
  {
-	 List<User> userList=userServiceI.findAllUsers();
-	 return userList.stream().map(this::convertUserToDto).collect(Collectors.toList());
+	 Admin user=(Admin)session.getAttribute("user");
+	if(user!=null)
+	{
+		 List<User> userList=userServiceI.findAllUsers();
+		 return userList.stream().map(this::convertUserToDto).collect(Collectors.toList());
+	}else 
+	{
+		return null;
+	}
  }
  
  private User convertDtotoUser(userDto user)

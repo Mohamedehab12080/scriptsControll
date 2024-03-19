@@ -5,6 +5,14 @@ public class responseOfCheck {
 	private String status;
 	private String createdDate;
 	private String durationDate;
+	private String address;
+	
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
 	public String getStatus() {
 		return status;
 	}
