@@ -181,7 +181,7 @@ public class userServiceImpl implements userServiceInterface{
 			
 			if(user.getMobileNumber()!=null)
 			{
-				oldUser.setMobileNumber(user.getMobileNumber());
+				oldUser.setMobileNumber(user.getMobileNumber().strip());
 			}
 			
 			if(user.getNote()!=null)

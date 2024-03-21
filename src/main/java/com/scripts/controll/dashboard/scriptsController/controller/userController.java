@@ -164,7 +164,7 @@ public class userController {
 		if(user!=null)
 		{
 	 	String result=userServiceI.updateUser(userDto);
-	 	if(result.equals("update"))
+	 	if(result.equals("updated"))
 	 	{
 			 return "redirect:/user/getPage?updated_success";
 	

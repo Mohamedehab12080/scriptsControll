@@ -50,10 +50,10 @@ public class userDto {
 		this.note = note;
 	}
 	public String getMobileNumber() {
-		return mobileNumber;
+		return mobileNumber.strip();
 	}
 	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
+		this.mobileNumber = mobileNumber.strip();
 	}
 	public Long getId() {
 		return id;
