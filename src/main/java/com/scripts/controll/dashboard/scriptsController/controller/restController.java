@@ -1,6 +1,7 @@
 package com.scripts.controll.dashboard.scriptsController.controller;
 
 import java.time.Duration;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -25,12 +26,14 @@ import com.scripts.controll.dashboard.scriptsController.DTO.userDto;
 import com.scripts.controll.dashboard.scriptsController.DTO.userDtoMapper;
 import com.scripts.controll.dashboard.scriptsController.model.Admin;
 import com.scripts.controll.dashboard.scriptsController.model.User;
+import com.scripts.controll.dashboard.scriptsController.service.numberServiceInterface;
 import com.scripts.controll.dashboard.scriptsController.service.runningScriptServiceInterface;
 //Your imports here
 import com.scripts.controll.dashboard.scriptsController.service.userServiceInterface;
 
 import jakarta.servlet.http.HttpSession;
 
+import com.scripts.controll.dashboard.scriptsController.model.Number;
 @RestController
 @RequestMapping("/controller")
 public class restController {
@@ -39,6 +42,8 @@ public class restController {
 	private runningScriptServiceInterface runningSecriptServiceI;
 	@Autowired
 	private userServiceInterface userServiceI;
+	@Autowired
+	private numberServiceInterface numberServiceI;
 	
  @PostMapping("/runScript")
  public ResponseEntity<String> runScript(@RequestParam String scriptName) {
@@ -76,6 +81,52 @@ public class restController {
  public ResponseEntity<String> enableUserById(@RequestParam Long userId)
  {
 	 return ResponseEntity.ok(userServiceI.enableUserById(userId));
+ }
+ 
+ @DeleteMapping("/deleteNumberId/{id}")
+ public ResponseEntity<String> deleteNumberId(@PathVariable("id") Long id)
+ {
+	 return ResponseEntity.ok(numberServiceI.deleteById(id));
+ }
+ @DeleteMapping("/deleteNumber")
+ public ResponseEntity<String> deleteNumber(@RequestParam String number)
+ {
+	 return ResponseEntity.ok(numberServiceI.deleteById(numberServiceI.findByName(number).getId()));
+ }
+ 
+ @PostMapping("/insertNumbers")
+ public List<String> insertNumbers(@RequestBody numberRequest numberRequest)
+ {
+	 return numberServiceI.insertAll(numberRequest.setAndGetNumberObject());
+ }
+ 
+ @GetMapping("/findOneNumber")
+ public ResponseEntity<?> findOneNumber()
+ {
+	 Number returned=numberServiceI.findByOrderLimit1();
+	 String returnString="";
+	 if(returned!=null)
+	 {
+		returnString=returned.getNumber();
+		numberServiceI.deleteById(returned.getId());
+		return ResponseEntity.ok(returnString);
+	 }else 
+	 {
+		 return ResponseEntity.notFound().build();
+	 }
+	 
+ }
+ @GetMapping("/findAllNumbers")
+ public ResponseEntity<?> findAllNumbers()
+ {
+	 return ResponseEntity.ok(numberServiceI.findAll());
+ }
+ 
+ @PostMapping("/truncate")
+ public ResponseEntity<?> truncateTheTable()
+ {
+	 numberServiceI.truncateTable();
+	 return ResponseEntity.ok("Truncated");
  }
  
  @GetMapping("/findByEmail")

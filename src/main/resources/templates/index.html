@@ -5,6 +5,53 @@
 		
 	</head>
 	<body>
-		
+		 <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Number</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+               <tr th:each="user: ${userList}">
+				   <td th:if="${user.isEnabled == true}">
+					   <i class="fa fa-toggle-on" style="color: forestgreen;"></i> 
+					   <span th:text="${user.name}"></span>
+				   </td>
+				    
+					<td th:if="${user.isEnabled == false}">
+					   <i class="fas fa-toggle-off" style="color: rgb(255, 0, 0);"></i> 
+					   <span th:text="${user.name}"></span>
+				   </td>
+				   <td>
+					   <span th:text="${user.email}"></span>
+				   </td>
+				     <td>
+					   <span th:text="${user.mobileNumber}"></span>
+				   	 </td>
+				   	  <td th:if="${user.isEnabled == true}">
+					   <span>Enabled</span>
+				   	 </td>
+				   	  <td th:if="${user.isEnabled == false}">
+					   <span>Disabled</span>
+				   	 </td>
+				   	  <td>
+					   <span th:text="${user.note}"></span>
+				   	 </td>
+				   	 <td>
+					   <button class="edit_btn">Edit</button>
+					   <div style="display: inline-block;" th:if="${user.isEnabled == false}">
+						   <a href="#" th:href="@{/user/enable/{id} (id=${user.id})}" th:method="put" class="enable_btn" >Enable</a>
+					   </div>
+					   <div  style="display: inline-block;" th:if="${user.isEnabled == true}">
+						   <a href="#" th:href="@{/user/disable/{id} (id=${user.id})}" th:method="put" class="enable_btn"  style="background-color:darkred	;">Disable</a>
+					   </div>
+	                   <a href="#" th:href="@{/user/delete/{id} (id=${user.id})}" class="delete_btn">Delete</a>
+				   	   <span hidden id="userIdd" th:text="${user.id}"></span>
+				   	   <span hidden class="userPasswords" id="userPassword" th:text="${user.password}"></span>
+				   	 </td>
+			   </tr>
+            </tbody>
+        </table>
 	</body>
 </html>

@@ -20,6 +20,7 @@ import com.scripts.controll.dashboard.scriptsController.DTO.userDto;
 import com.scripts.controll.dashboard.scriptsController.DTO.userDtoMapper;
 import com.scripts.controll.dashboard.scriptsController.model.Admin;
 import com.scripts.controll.dashboard.scriptsController.model.User;
+import com.scripts.controll.dashboard.scriptsController.service.numberServiceInterface;
 import com.scripts.controll.dashboard.scriptsController.service.runningScriptServiceInterface;
 //Your imports here
 import com.scripts.controll.dashboard.scriptsController.service.userServiceInterface;
@@ -35,6 +36,9 @@ public class userController {
 	private runningScriptServiceInterface runningSecriptServiceI;
 	@Autowired
 	private userServiceInterface userServiceI;
+	
+	@Autowired
+	private numberServiceInterface numberServiceI;
 	
  @PostMapping("/runScript")
  public ResponseEntity<String> runScript(@RequestParam String scriptName) {
@@ -85,6 +89,12 @@ public class userController {
 		}
  }
 
+ 
+ @GetMapping("/deleteNumber/{id}")
+ public String deleteNumber(HttpSession session,@PathVariable("id") Long id)
+ {
+	 return "redirect:/user/getNumberPage?"+numberServiceI.deleteById(id);
+ }
  
  @GetMapping("/delete/{id}")
  public String deleteUser(HttpSession session,@PathVariable("id") Long id)
