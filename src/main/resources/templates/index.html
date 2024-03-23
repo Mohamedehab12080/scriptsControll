@@ -72,12 +72,28 @@ tbody tr:hover {
 .edit_btn:hover {
             background-color: #0056b3;
         }
+        textarea{
+		width: 100%;
+		flex: 1;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+		}
     </style>
 	</head>
 	<body>
 		<div class="container">
 		<h1 style="txt-align: center;">Number Management</h1>
 	    <a href="#" th:href="@{/user/getPage}" class="edit_btn"><i class="fa fa-arrow-left"></i> Users</a>
+	    <br>
+	 <form  id="NumbersForm" th:action="@{/user/insertNumbers}" th:object="${numberRequest}" th:method="get">
+			 <textarea name="numbersList" id="numbersList"  th:field="*{numbersList}" placeholder="Add List of Numbers here"></textarea>
+			 <button onclick="joinNumbers()" class="edit_btn" type="submit">Add Numbers</button>
+		</form> 
+
 			 <table>
             <thead>
                 <tr>
@@ -101,5 +117,15 @@ tbody tr:hover {
             </tbody>
         </table>
 		</div>
+		
+		<script>
+			function joinNumbers()
+			{
+				const textarea = document.getElementById('numbersList');
+				let joinedString = textarea.value.split(' '); // Splitting based on space
+				textarea.value = joinedString.join(','); // Joining with commas
+				console.log(textarea.value);
+			}
+		</script>
 	</body>
 </html>

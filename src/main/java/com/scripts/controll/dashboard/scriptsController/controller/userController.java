@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -90,6 +91,18 @@ public class userController {
 		}
  }
 
+ @GetMapping("/insertNumbers")
+ public String insertNumbers(@ModelAttribute("numberRequest") numberRequest numberRequest)
+ {
+	 List <String> insertedNumbers =numberServiceI.insertAll(numberRequest.setAndGetNumberObject());
+	 if(!insertedNumbers.isEmpty())
+	 {
+		 return "redirect:/user/getNumber?Inserted";
+	 }else
+	 {
+		 return "redirect:/user/getNumber?something_wrong";
+	 }
+ }
  
  @GetMapping("/getNumber")
  public String getPageIndex(HttpSession session,Model model)
@@ -99,6 +112,7 @@ public class userController {
 		{
 			List<Number> numberList=numberServiceI.findAll();
 			model.addAttribute("numberList",numberList);
+			model.addAttribute("numberRequest",new numberRequest());
 			return "index";
 		}else 
 		{
