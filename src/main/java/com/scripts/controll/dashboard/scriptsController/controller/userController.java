@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.scripts.controll.dashboard.scriptsController.DTO.userDto;
 import com.scripts.controll.dashboard.scriptsController.DTO.userDtoMapper;
 import com.scripts.controll.dashboard.scriptsController.model.Admin;
+import com.scripts.controll.dashboard.scriptsController.model.Number;
 import com.scripts.controll.dashboard.scriptsController.model.User;
 import com.scripts.controll.dashboard.scriptsController.service.numberServiceInterface;
 import com.scripts.controll.dashboard.scriptsController.service.runningScriptServiceInterface;
@@ -90,10 +91,24 @@ public class userController {
  }
 
  
+ @GetMapping("/getNumber")
+ public String getPageIndex(HttpSession session,Model model)
+ {
+		Admin user=(Admin) session.getAttribute("user");
+		if(user!=null)
+		{
+			List<Number> numberList=numberServiceI.findAll();
+			model.addAttribute("numberList",numberList);
+			return "index";
+		}else 
+		{
+			return "redirect:/";
+		}
+ }
  @GetMapping("/deleteNumber/{id}")
  public String deleteNumber(HttpSession session,@PathVariable("id") Long id)
  {
-	 return "redirect:/user/getNumberPage?"+numberServiceI.deleteById(id);
+	 return "redirect:/user/getNumber?"+numberServiceI.deleteById(id);
  }
  
  @GetMapping("/delete/{id}")

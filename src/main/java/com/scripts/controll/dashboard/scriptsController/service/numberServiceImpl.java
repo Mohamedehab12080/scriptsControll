@@ -19,6 +19,7 @@ public class numberServiceImpl implements numberServiceInterface{
 	private numberRepository numberRepo;
 	
 	@Override
+	@Transactional
 	public String deleteById(Long id) {
 		Optional<Number> finded=findById(id);
 		if(!finded.isPresent())
