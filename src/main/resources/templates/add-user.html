@@ -386,7 +386,7 @@
             </select>
             <textarea name="note" id="noteUp"  th:field="*{note}" placeholder="Add your optional notes here"></textarea>
             <button class="button_update" type="submit">update User</button>
-         	<input type="hidden" name="userId" id="userId" th:field="*{id}">
+         	<input  type="hidden" name="userId" id="userId" th:field="*{id}">
         </form>
             	
         <i class="fa fa-search search-icon"></i>
@@ -439,7 +439,7 @@
 						   <a href="#" th:href="@{/user/disable/{id} (id=${user.id})}" th:method="put" class="enable_btn"  style="background-color:darkred	;">Disable</a>
 					   </div>
 	                   <a href="#" th:href="@{/user/delete/{id} (id=${user.id})}" class="delete_btn">Delete</a>
-				   	   <span hidden id="userIdd" th:text="${user.id}"></span>
+				   	   <span hidden id="userIdd" class="userIdd" th:text="${user.id}"></span>
 				   	   <span hidden class="userPasswords" id="userPassword" th:text="${user.password}"></span>
 				   	 </td>
 			   </tr>
@@ -634,8 +634,9 @@ function populateForm(row) {
     var mobileNumber = row.find('td:eq(2) span').text();
     var isEnabled = row.find('td:eq(3) span').text() === 'Enabled' ? '1' : '0';
     var note = row.find('td:eq(4) span').text();
-	var userId=row.find('td:eq(5) span').text();
+	var userId=row.find('.userIdd').text();
 	var userPassword=row.find('.userPasswords').text();
+	console.log("userId : ",userId)
     // Set the retrieved values into the form inputs
     $('#userNameUp').val(name);
     $('#emailUp').val(email);

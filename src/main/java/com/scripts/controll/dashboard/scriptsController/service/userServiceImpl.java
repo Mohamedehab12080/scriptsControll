@@ -135,7 +135,7 @@ public class userServiceImpl implements userServiceInterface{
 
 	@Override
 	public List<User> findAllUsers() {
-		return userRepo.findAll();
+		return userRepo.findAllByOrderByCreatedDateAsc();
 	}
 
 	@Override
@@ -194,13 +194,16 @@ public class userServiceImpl implements userServiceInterface{
 			User userUpdated =userRepo.save(oldUser);
 			if(userUpdated!=null)
 			{
+				System.out.println("user Updated : "+userUpdated.getId());
 				return "updated";
 			}else 
 			{
+				System.out.println("userNot Updated : ");
 				return "can't be updated";
 			}
 		}else 
 		{
+			System.out.println("userNotFound : "+user.getId());
 			return "User not found";
 		}
 	}
