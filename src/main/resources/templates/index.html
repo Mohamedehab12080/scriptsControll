@@ -93,7 +93,8 @@ tbody tr:hover {
 			 <textarea name="numbersList" id="numbersList"  th:field="*{numbersList}" placeholder="Add List of Numbers here"></textarea>
 			 <button onclick="joinNumbers()" class="edit_btn" type="submit">Add Numbers</button>
 		</form> 
-
+		<br>
+	    <a href="#" th:href="@{/user/truncateTable}"  style="background-color: #c82333;" class="edit_btn"><i class="fa fa-trash"></i> Delete All</a>
 			 <table>
             <thead>
                 <tr>

@@ -119,6 +119,14 @@ public class userController {
 			return "redirect:/";
 		}
  }
+ 
+ @GetMapping("/truncateTable")
+ public String deleteAll()
+ {
+	 numberServiceI.truncateTable();
+	 return "redirect:/user/getNumber?Truncated";
+ }
+ 
  @GetMapping("/deleteNumber/{id}")
  public String deleteNumber(HttpSession session,@PathVariable("id") Long id)
  {
