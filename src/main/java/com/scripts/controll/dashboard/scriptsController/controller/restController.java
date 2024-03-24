@@ -168,7 +168,7 @@ public class restController {
  {
 	User fetched=userServiceI.findByEmail(checkRequest.getUseremail().strip());
 	 if(fetched!=null&&fetched.getPassword().equals(checkRequest.getUserpassword()) 
-			 &&checkRequest.getMacAddress().equalsIgnoreCase(fetched.getMobileNumber()))
+			 &&checkRequest.getMacAddress().equalsIgnoreCase(fetched.getMobileNumber()) && fetched.isEnabled())
 	 {
 		 	
 	        LocalDateTime createdDate = fetched.getCreatedDate();
