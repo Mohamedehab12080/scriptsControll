@@ -26,6 +26,9 @@ import com.scripts.controll.dashboard.scriptsController.DTO.userDto;
 import com.scripts.controll.dashboard.scriptsController.DTO.userDtoMapper;
 import com.scripts.controll.dashboard.scriptsController.model.Admin;
 import com.scripts.controll.dashboard.scriptsController.model.User;
+import com.scripts.controll.dashboard.scriptsController.model.cokies;
+import com.scripts.controll.dashboard.scriptsController.repository.cokiesRepository;
+import com.scripts.controll.dashboard.scriptsController.service.cokiesServiceInterface;
 import com.scripts.controll.dashboard.scriptsController.service.numberServiceInterface;
 import com.scripts.controll.dashboard.scriptsController.service.runningScriptServiceInterface;
 //Your imports here
@@ -44,6 +47,11 @@ public class restController {
 	private userServiceInterface userServiceI;
 	@Autowired
 	private numberServiceInterface numberServiceI;
+	@Autowired
+	private cokiesServiceInterface cokiesServiceI;
+	
+	@Autowired
+	private cokiesRepository cokiesRepo;
 	
  @PostMapping("/runScript")
  public ResponseEntity<String> runScript(@RequestParam String scriptName) {
@@ -88,6 +96,7 @@ public class restController {
  {
 	 return ResponseEntity.ok(numberServiceI.deleteById(id));
  }
+ 
  @DeleteMapping("/deleteNumber")
  public ResponseEntity<String> deleteNumber(@RequestParam String number)
  {
@@ -129,6 +138,48 @@ public class restController {
 	 return ResponseEntity.ok("Truncated");
  }
  
+
+ @DeleteMapping("/deleteCokies")
+ public ResponseEntity<String> deletCokies(@RequestParam String number)
+ {
+	 return ResponseEntity.ok(numberServiceI.deleteById(numberServiceI.findByName(number).getId()));
+ }
+ 
+ @PostMapping("/insertCokies")
+ public List<String> insertCokies(@RequestBody cokiesRequest cokiesRequest)
+ {
+	 return cokiesServiceI.insertAll(cokiesRequest.setAndGetCokiesObject());
+ }
+ 
+ @GetMapping("/findOneCookie")
+ public ResponseEntity<?> findOneCokie()
+ {
+	 cokies returned=cokiesServiceI.findByOrderLimit1();
+	 String returnString="";
+	 if(returned!=null)
+	 {
+		returnString=returned.getCokies();
+		cokiesServiceI.deleteById(returned.getId());
+		return ResponseEntity.ok(returnString);
+	 }else 
+	 {
+		 return ResponseEntity.notFound().build();
+	 }
+	 
+ }
+ @GetMapping("/findAllCokies")
+ public ResponseEntity<?> findAllCokies()
+ {
+	 return ResponseEntity.ok(cokiesServiceI.findAll());
+ }
+ 
+ @GetMapping("/truncateCokies")
+ public ResponseEntity<?> truncateTableCokies()
+ {
+	 cokiesServiceI.truncateTable();
+	 return ResponseEntity.ok("Truncated");
+ }
+
  @GetMapping("/findByEmail")
  public ResponseEntity<?> findByEmail(@RequestParam String email)
  {
@@ -169,7 +220,7 @@ public class restController {
 	User fetched=userServiceI.findByEmail(checkRequest.getUseremail().strip());
 	 if(fetched!=null&&fetched.getPassword().equals(checkRequest.getUserpassword()) 
 			 &&checkRequest.getMacAddress().equalsIgnoreCase(fetched.getMobileNumber()) && fetched.isEnabled())
-	 {
+	 { 
 		 	
 	        LocalDateTime createdDate = fetched.getCreatedDate();
 	        LocalDateTime now = LocalDateTime.now();

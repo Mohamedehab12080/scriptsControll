@@ -22,6 +22,8 @@ import com.scripts.controll.dashboard.scriptsController.DTO.userDtoMapper;
 import com.scripts.controll.dashboard.scriptsController.model.Admin;
 import com.scripts.controll.dashboard.scriptsController.model.Number;
 import com.scripts.controll.dashboard.scriptsController.model.User;
+import com.scripts.controll.dashboard.scriptsController.model.cokies;
+import com.scripts.controll.dashboard.scriptsController.service.cokiesServiceInterface;
 import com.scripts.controll.dashboard.scriptsController.service.numberServiceInterface;
 import com.scripts.controll.dashboard.scriptsController.service.runningScriptServiceInterface;
 //Your imports here
@@ -41,7 +43,8 @@ public class userController {
 	
 	@Autowired
 	private numberServiceInterface numberServiceI;
-	
+	@Autowired
+	private cokiesServiceInterface cokiesServiceI;
  @PostMapping("/runScript")
  public ResponseEntity<String> runScript(@RequestParam String scriptName) {
 	 
@@ -127,10 +130,82 @@ public class userController {
 	 return "redirect:/user/getNumber?Truncated";
  }
  
+ 
+ @GetMapping("/insertCokies")
+ public String insertCokies(@ModelAttribute("cokiesRequest") cokiesRequest cokiesRequest)
+ {
+	 List <String> insertedCokies =cokiesServiceI.insertAll(cokiesRequest.setAndGetCokiesObject());
+	 if(!insertedCokies.isEmpty())
+	 {
+		 return "redirect:/user/getCokies?Inserted";
+	 }else
+	 {
+		 return "redirect:/user/getCokies?something_wrong";
+	 }
+ }
+ 
+ @GetMapping("/getCokies")
+ public String getPageCokies(HttpSession session,Model model)
+ {
+		Admin user=(Admin) session.getAttribute("user");
+		if(user!=null)
+		{
+			List<cokies> cokiesList=cokiesServiceI.findAll();
+			model.addAttribute("cokiesList",cokiesList);
+			model.addAttribute("cokiesRequest",new cokiesRequest());
+			return "cokies";
+		}else 
+		{
+			return "redirect:/";
+		}
+ }
+ 
+ @GetMapping("/truncateCokiesTable")
+ public String deleteAllCokies()
+ {
+	 cokiesServiceI.truncateTable();
+	 return "redirect:/user/getCokies?Truncated";
+ }
+ 
+ @GetMapping("/deleteCokies/{id}")
+ public String deleteCokies(HttpSession session,@PathVariable("id") Long id)
+ {
+	 Admin user=(Admin) session.getAttribute("user");
+	 if(user!=null)
+	 {
+		 String result =cokiesServiceI.deleteById(id);
+		 if(result.equals("deleted"))
+		 {
+			 return "redirect:/user/getCokies?Deleted";
+		 }else 
+		 {
+			 return "redirect:/user/getCokies?can't be deleted";
+		 }
+	 }else 
+	 {
+		 return "redirect:/";
+	 }
+	 
+ }
+ 
  @GetMapping("/deleteNumber/{id}")
  public String deleteNumber(HttpSession session,@PathVariable("id") Long id)
  {
-	 return "redirect:/user/getNumber?"+numberServiceI.deleteById(id);
+	 Admin user=(Admin) session.getAttribute("user");
+	 if(user!=null)
+	 {
+		 String result =numberServiceI.deleteById(id);
+		 if(result.equals("deleted"))
+		 {
+			 return "redirect:/user/getNumber?Deleted";
+		 }else 
+		 {
+			 return "redirect:/user/getNumber?can't be deleted";
+		 }
+	 }else 
+	 {
+		 return "redirect:/";
+	 }
  }
  
  @GetMapping("/delete/{id}")
