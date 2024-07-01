@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		
+		<title>Cookies Management</title>
+		<meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+		    <style>
+       /* Table styles */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    margin: 0 auto; /* Center the table horizontally */
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Delete button style */
+.delete_btn {
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 4px;
+}
+
+.delete_btn:hover {
+    background-color: #c82333;
+}
+
+/* Hover effect for table rows */
+tbody tr:hover {
+    background-color: #f5f5f5;
+}
+        .edit_btn {
+        background-color:#008CBA ; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+.edit_btn:hover {
+            background-color: #0056b3;
+        }
+        textarea{
+		width: 100%;
+		flex: 1;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+		}
+    </style>
+	</head>
+	<body>
+		<div class="container">
+		<h1 style="txt-align: center;">Cookies Management</h1>
+	    <a href="#" th:href="@{/user/getPage}" class="edit_btn"><i class="fa fa-arrow-left"></i> Users</a>
+	    <br>
+		<br>
+	    <a href="#" th:href="@{/user/truncateCokiesTable}"  style="background-color: #c82333;" class="edit_btn"><i class="fa fa-trash"></i> Delete All</a>
+			 <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cookies</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+               <tr th:each="cokie: ${cokiesList}">
+				   <td>
+					   <span  id="cokieId" th:text="${cokie.id}"></span>
+				   </td>
+				   <td>
+					   <span id="cokie" th:text="${cokie.cokies}"></span>
+				   </td>
+				   <td>
+	                   <a href="#" th:href="@{/user/deleteCokies/{id} (id=${cokie.id})}" class="delete_btn">Delete</a>
+				   </td>
+			   </tr>
+            </tbody>
+        </table>
+		</div>
+		
+	</body>
+</html>
