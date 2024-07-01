@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        .button_add {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button_add:hover {
+            background-color: #0056b3;
+        }
+        .button_update{
+			padding: 10px 20px;
+            background-color: #008CBA;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+		}
+		 .button_update:hover {
+            background-color: #0056b3;
+        }
+        
+       #addUserForm {
+        max-width: 950px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    #addUserForm input[type="text"],
+    #addUserForm input[type="password"],
+    #addUserForm textarea,
+    #addUserForm select {
+        flex: 1;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    #addUserForm select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url('data:image/svg+xml;utf8,<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+        background-repeat: no-repeat;
+        background-position-x: calc(100% - 10px);
+        background-position-y: center;
+    }
+
+    #addUserForm textarea {
+        flex: 1;
+        height: 100px;
+    }
+
+    #addUserForm button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    #addUserForm button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    @media (max-width: 900px) {
+        #addUserForm {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        #addUserForm input[type="text"],
+        #addUserForm input[type="password"],
+        #addUserForm textarea,
+        #addUserForm select {
+            width: 100%;
+            margin-right: 0;
+        }
+    }
+    
+    
+  .updateUserForm {
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .updateUserForm input[type="text"],
+    .updateUserForm input[type="password"],
+    .updateUserForm textarea,
+   .updateUserForm select {
+        flex: 1;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    .updateUserForm select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url('data:image/svg+xml;utf8,<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+        background-repeat: no-repeat;
+        background-position-x: calc(100% - 10px);
+        background-position-y: center;
+    }
+
+    .updateUserForm textarea {
+        flex: 1;
+        height: 100px;
+    }
+
+    .updateUserForm button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .updateUserForm button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    @media (max-width: 950px) {
+        #addUserForm {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .updateUserForm input[type="text"],
+        .updateUserForm input[type="password"],
+        .updateUserForm textarea,
+       	.updateUserForm select {
+            width: 100%;
+            margin-right: 0;
+        }
+    }
+     footer {
+         background-color: rgba(51, 51, 51, 0.8); /* Dark gray color with 80% transparency */
+	    color: #fff;
+	    padding: 20px 0;
+	    text-align: center;
+	    position: relative; /* Position footer fixed at the bottom */
+	    width: 100%; /* Full width */
+	    bottom: 0; /* Stick to the bottom */
+	    height: 0; /* Initially hide the footer */
+	    transition: height 0.3s; /* Add a transition effect */
+	    overflow: hidden; /* Hide any content that overflows */
+    }
+
+    .container_footer {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    /*
+.show-footer {
+    height: 10px; /* Set the height to show the footer 
+}*/
+    p {
+        margin: 0;
+        font-size: 16px;
+    }
+        .edit_btn {
+        background-color:#008CBA ; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+.edit_btn:hover {
+            background-color: #0056b3;
+        }
+    /* Style for enable button */
+    .enable_btn {
+        background-color:#4CAF50 ; /* Blue */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+.enable_btn:hover {
+            background-color: rgb(0, 128, 0);
+        }
+    /* Style for delete button */
+    .delete_btn {
+        background-color: #f44336; /* Red */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .delete_btn:hover {
+            background-color: rgb(128, 0, 0);
+        }
+    .search-container {
+        position: relative;
+    }
+
+    /* Style for search icon */
+    .search-icon {
+        position: relative;
+        top: 43%;
+        margin-right: 5px;
+        color: #555; /* Change the color of the search icon */
+        pointer-events: none; /* Ensure the icon doesn't intercept pointer events */
+    }
+
+    /* Style for search input */
+    #searchInput {
+		flex: 1;
+        padding: 10px;
+        margin-bottom:0px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+		margin-top: 15px;
+		margin-right: 10px;
+        padding-right: 30px; /* Ensure space for the icon */
+    }
+    .addUserForm,
+    .updateUserForm
+    {
+		display: none;
+	}
+    .active {
+        display: flex;
+	}
+	
+	.password-wrapperUp{
+    position: relative;
+}
+
+#passwordUp {
+    padding-right: 30px; /* Adjust padding to accommodate the icon */
+}
+
+.toggle-passwordUp{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.toggle-passwordUp i:hover {
+    color: #007bff; /* Change the color on hover */
+}
+  		.logout-link {
+            color: #333; /* Change the color as needed */
+            text-decoration: none;
+        }
+        .logout-link:hover {
+            color: #666; /* Change the color on hover as needed */
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+	
+    	  <a href="#" th:href="@{/logout}" class="logout-link">
+     	    <i class="fas fa-sign-out-alt"></i> Logout
+    	 </a>
+    <div class="container">
+        <h1>User Management Dashboard</h1>
+        
+        <!-- Form for adding a new user -->
+        <form  class="addUserForm active" id="addUserForm" th:action="@{/user/addUser}" th:object="${userDto}" method="post">
+            <input type="text" name="name" id="userName" placeholder="Name" th:field="*{name}" required>
+            <input type="text" name="email" id="email" placeholder="Email" th:field="*{email}" required>
+			<input type="password" name="password" id="password" placeholder="Password" th:field="*{password}" required>
+            <input type="text" name="mobileNumber" id="mobileNumber" placeholder="MAC Address" th:field="*{mobileNumber}" >
+            <select th:field="*{Enabled}" name="isEnabled" id="isEnabled" required>
+                <option value="0">Disabled</option>
+                <option value="1">Enabled</option>
+            </select>
+            <textarea name="note" id="note"  th:field="*{note}" placeholder="Add your optional notes here"></textarea>
+            <button class="button_add" type="submit">Add User</button>
+        </form>
+        
+             <!-- Form for adding a new user -->
+        <form  class="updateUserForm"  th:action="@{/user/updateUsers}" th:object="${userDto}" method="post">
+
+          	<button style="background-color: #007bff; /* Blue background */
+		    color: white; /* White text color */
+		    border: none; /* Remove border */
+		    padding: 10px 20px; /* Padding for inner content */
+		    border-radius: 5px; /* Rounded corners */
+		    cursor: pointer; /* Show pointer cursor on hover */
+		    font-size: 16px; /* Font size */
+		    margin-bottom: 10px; /* Add some margin at the bottom */"  onclick="showAdd()" class="back-button"><i class="fa fa-arrow-left"></i> Back</button>
+            <input type="text" name="name" id="userNameUp" placeholder="Name" th:field="*{name}" required>
+            <input type="text" name="email" id="emailUp" placeholder="Email" th:field="*{email}" required>
+<div class="password-wrapperUp">
+    <input type="password" name="passwordUp" id="passwordUp" placeholder="Password" th:field="*{password}" required>
+    <!-- Eye icon button -->
+    <span class="toggle-passwordUp" onclick="togglePasswordVisibility()">
+        <i class="fa fa-eye" aria-hidden="true"></i>
+    </span>
+</div>            <input type="text" name="mobileNumber" id="mobileNumberUp" placeholder="MAC Address" th:field="*{mobileNumber}" >
+            <select th:field="*{Enabled}" name="isEnabled" id="isEnabledUp" required>
+                <option value="0">Disabled</option>
+                <option value="1">Enabled</option>
+            </select>
+            <textarea name="note" id="noteUp"  th:field="*{note}" placeholder="Add your optional notes here"></textarea>
+            <button class="button_update" type="submit">update User</button>
+         	<input  type="hidden" name="userId" id="userId" th:field="*{id}">
+        </form>
+            	
+        <i class="fa fa-search search-icon"></i>
+        <input type="text" id="searchInput" placeholder="Search by Name or Mobile Number">
+	    <a href="#" th:href="@{/user/getNumber}" class="edit_btn">Numbers</a>
+	    <a href="#" th:href="@{/user/getCokies}" class="edit_btn">Cookies</a>
+        <!-- Table of users -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Status</th>
+                    <th>Note</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+               <tr th:each="user: ${userList}">
+				   <td th:if="${user.isEnabled == true}">
+					   <i class="fa fa-toggle-on" style="color: forestgreen;"></i> 
+					   <span th:text="${user.name}"></span>
+				   </td>
+				    
+					<td th:if="${user.isEnabled == false}">
+					   <i class="fas fa-toggle-off" style="color: rgb(255, 0, 0);"></i> 
+					   <span th:text="${user.name}"></span>
+				   </td>
+				   <td>
+					   <span th:text="${user.email}"></span>
+				   </td>
+				     <td>
+					   <span th:text="${user.mobileNumber}"></span>
+				   	 </td>
+				   	  <td th:if="${user.isEnabled == true}">
+					   <span>Enabled</span>
+				   	 </td>
+				   	  <td th:if="${user.isEnabled == false}">
+					   <span>Disabled</span>
+				   	 </td>
+				   	  <td>
+					   <span th:text="${user.note}"></span>
+				   	 </td>
+				   	 <td>
+					   <button class="edit_btn">Edit</button>
+					   <div style="display: inline-block;" th:if="${user.isEnabled == false}">
+						   <a href="#" th:href="@{/user/enable/{id} (id=${user.id})}" th:method="put" class="enable_btn" >Enable</a>
+					   </div>
+					   <div  style="display: inline-block;" th:if="${user.isEnabled == true}">
+						   <a href="#" th:href="@{/user/disable/{id} (id=${user.id})}" th:method="put" class="enable_btn"  style="background-color:darkred	;">Disable</a>
+					   </div>
+	                   <a href="#" th:href="@{/user/delete/{id} (id=${user.id})}" class="delete_btn">Delete</a>
+				   	   <span hidden id="userIdd" class="userIdd" th:text="${user.id}"></span>
+				   	   <span hidden class="userPasswords" id="userPassword" th:text="${user.password}"></span>
+				   	 </td>
+			   </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+    <footer>
+    <div class="container_footer">
+        <p th:text="${copy}"></p>
+    </div>
+	</footer>
+<script>
+    // Get the input element
+    var searchInput = document.getElementById('searchInput');
+
+    // Add event listener for input event
+    searchInput.addEventListener('input', function() {
+        // Get the value of the search input
+        var searchText = this.value.toLowerCase();
+        
+        // Get all table rows
+        var rows = document.querySelectorAll('#userTableBody tr');
+
+        // Loop through each row and check if it matches the search text
+        rows.forEach(function(row) {
+            var name = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            var mobile = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            
+            // Hide row if it doesn't match the search text
+            if (name.indexOf(searchText) === -1 && mobile.indexOf(searchText) === -1) {
+                row.style.display = 'none';
+            } else {
+                row.style.display = ''; // Show row
+            }
+        });
+    });
+</script>
+    <script>
+		/*
+		window.addEventListener('scroll', function() {
+    var footer = document.querySelector('footer');
+    var scrollHeight = window.scrollY;
+    var totalHeight = document.body.scrollHeight;
+    var windowHeight = window.innerHeight;
+    
+    // Calculate the distance from the bottom of the page
+    var bottomDistance = totalHeight - (scrollHeight + windowHeight);
+    
+    // Show the footer when scrolled to the bottom
+    if (bottomDistance <= 0) {
+        footer.classList.add('show-footer');
+    } else {
+        footer.classList.remove('show-footer');
+    }
+});
+*/
+window.addEventListener('scroll', function() {
+    var footer = document.querySelector('footer');
+    var scrollHeight = window.scrollY;
+    var totalHeight = document.body.scrollHeight;
+    var windowHeight = window.innerHeight;
+    
+    // Calculate the distance from the bottom of the page
+    var bottomDistance = totalHeight - (scrollHeight + windowHeight);
+    
+    // Show the footer when scrolled to the bottom
+    if (bottomDistance <= 0) {
+        footer.style.height = 'auto';
+    } else {
+        footer.style.height = '0';
+    }
+});
+
+		function togglePasswordVisibility() {
+    var passwordInput = document.getElementById('passwordUp');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+    } else {
+        passwordInput.type = 'password';
+    }
+}
+function togglePasswordVisibilityAdd() {
+    var passwordInput = document.getElementById('password');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+    } else {
+        passwordInput.type = 'password';
+    }
+}
+		 function submitNewUser()
+        {
+			var userName=document.getElementById('userName').value;
+			var password=document.getElementById('password').value;
+			var email=document.getElementById('email').value;
+			var mobileNumber=document.getElementById('mobileNumber').value;
+			var isEnabled=document.getElementById('isEnabled').value;
+			var note=document.getElementById('note').value;
+			
+			var data = {
+				"name":userName,
+				"password":password,
+				"email":email,
+				"mobileNumber":mobileNumber,
+				"Enabled":isEnabled,
+				"note":note
+			};
+			$.ajax({
+		        url: '/controller/addUser',
+		        type: 'POST',
+		       	contentType:'application/json',
+		        data: JSON.stringify(data), // Corrected: Use 'data' instead of 'body'
+		        dataType: 'json', // Added: Specify the expected data type of the response
+		        success: function(response, textStatus, xhr) {
+		           if (response.status === "Added") {
+		        		window.location.href = '/user/getPage?success_add';
+				    } else if(response.status.includes("exists")) {
+				        window.location.href='/user/getPage?user_exists';
+				    }else 
+				    {
+						window.location.href='/user/getPage?not_added';
+					}
+		        },
+		        error: function(xhr, status, error) {
+		            // Handle error response
+		            console.error(xhr.responseText+" : "+status+" : "+error);
+		            // Display an error message to the user
+		        }
+		    });
+		}
+	</script>
+	
+	
+	<script>
+		
+		function showAdd()
+		{
+			var updateForm=document.querySelector('.updateUserForm');
+			var addUserForm=document.querySelector('.addUserForm');
+			updateForm.classList.remove('active');
+			addUserForm.classList.add('active');
+		}
+		function updateUser() {
+        // Gather form data
+        var userId=document.getElementById('userId').value;
+        var formData = {
+            user :{ name: $("#userName").val(),
+		            email: $("#email").val(),
+		            password: $("#password").val(),
+		            mobileNumber: $("#mobileNumber").val(),
+		            enabled: $("#isEnabled").val(),
+		            note: $("#note").val()
+            },
+            userId:2
+        };
+
+        // Send AJAX request to update user
+        $.ajax({
+            type: "PUT",
+            url: "/controller/updateUser", // Replace with your backend endpoint
+            data: JSON.stringify(formData),
+            contentType: "application/json",
+            success: function(response, textStatus, xhr) {
+                // Handle success response (if needed)
+                if(response.status==='updated')
+                {
+					window.location.href = '/user/getPage?updated_success';
+				}else if(response.status.includes('can'))
+				{
+					window.location.href = '/user/getPage?not_updated';
+				}else 
+				{
+					window.location.href = '/user/getPage?not_found';
+				}
+                alert("User updated successfully!");
+            },
+            error: function(xhr, status, error) {
+                // Handle error response (if needed)
+                console.error("Error updating user:", error);
+            }
+            
+        });
+    }
+		// Function to populate the form with values from the selected row
+function populateForm(row) {
+    // Retrieve the values from the row
+    var name = row.find('td:eq(0) span').text();
+    var email = row.find('td:eq(1) span').text();
+    var mobileNumber = row.find('td:eq(2) span').text();
+    var isEnabled = row.find('td:eq(3) span').text() === 'Enabled' ? '1' : '0';
+    var note = row.find('td:eq(4) span').text();
+	var userId=row.find('.userIdd').text();
+	var userPassword=row.find('.userPasswords').text();
+	console.log("userId : ",userId)
+    // Set the retrieved values into the form inputs
+    $('#userNameUp').val(name);
+    $('#emailUp').val(email);
+    $('#mobileNumberUp').val(mobileNumber);
+    $('#isEnabledUp').val(isEnabled);
+    $('#noteUp').val(note);
+    $('#userId').val(userId);
+    $('#passwordUp').val(userPassword);
+    
+}
+
+// Function to handle editing user
+function editUser(row) {
+    // Populate the form with values from the selected row
+        var updateForm=document.querySelector('.updateUserForm');
+		var addUserForm=document.querySelector('.addUserForm');
+		updateForm.classList.add('active');
+		addUserForm.classList.remove('active');
+    populateForm(row);
+}
+
+// Event listener for the edit button clicks
+$('.edit_btn').on('click', function() {
+    // Get the closest table row to the clicked button
+    var row = $(this).closest('tr');
+    
+    // Call the editUser function and pass the row parameter
+    editUser(row);
+});
+	</script>
+	
+	
+    <script th:inline="javascript">
+        
+        $(document).ready(function() {
+            // Function to handle checkbox state
+            $("input[type='checkbox']").on("change", function() {
+                var checkbox = $(this);
+                if (checkbox.is(":checked")) {
+                    checkbox.siblings("input[type='checkbox']").prop("checked", false); // Uncheck other checkboxes
+                }
+            });
+        });
+            // Function to delete a user asynchronously
+            $(document).on("click", ".deleteUserBtn", function(e) {
+                e.preventDefault(); // Prevent link click
+                var row = $(this).closest("tr");
+                $.post($(this).attr("href"), function() {
+                    // If the user is deleted successfully, remove the row from the table
+                    row.remove();
+                });
+            });
+    </script>
+</body>
+</html>
