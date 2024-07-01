@@ -23,6 +23,7 @@ public class Admin {
 	private String password;
 	private boolean isEnabled=true;
 	
+<<<<<<< HEAD
 //	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 //	@JoinTable(name="Admin_roles",
 //				joinColumns = @JoinColumn(name="Admin_id",
@@ -37,6 +38,22 @@ public class Admin {
 //	public void setRoles(Collection<Role> roles) {
 //		this.roles = roles;
 //	}
+=======
+	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	@JoinTable(name="Admin_roles",
+				joinColumns = @JoinColumn(name="Admin_id",
+				referencedColumnName = "id"),
+				inverseJoinColumns =
+				@JoinColumn(name="role_id",referencedColumnName = "id"))
+	private Collection<Role> roles;
+	
+	public Collection<Role> getRoles() {
+		return roles;
+	}
+	public void setRoles(Collection<Role> roles) {
+		this.roles = roles;
+	}
+>>>>>>> c93b7af8a34abd2b8dbc963eeeaed3081f391aac
 	public String getPassword() {
 		return password;
 	}

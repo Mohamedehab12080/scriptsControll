@@ -4,7 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
+<<<<<<< HEAD
 @Table(name = "user")
+=======
+@Table(name = "\"user\"")
+>>>>>>> c93b7af8a34abd2b8dbc963eeeaed3081f391aac
 public class User extends baseEntity<Long>{
 
 	private String name;
